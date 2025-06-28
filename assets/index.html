@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulario de Prueba Completo</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="container">
+
+    <header class="form-header">
+      <h1>Formulario de Evaluación Completa</h1>
+      <p>
+        Este formulario recopila todos los tipos de campos HTML5, y será usado para realizar pruebas automatizadas con Selenium WebDriver en Firefox.
+        Permite simular el llenado completo de campos para validar comportamiento, validaciones y automatización.
+      </p>
+    </header>
+
+    <form id="formulario-completo" enctype="multipart/form-data">
+
+      <div class="form-grid">
+
+        <div class="field-group">
+          <h3>Texto</h3>
+          <input type="text" name="texto" placeholder="Ingresa texto">
+        </div>
+
+        <div class="field-group">
+          <h3>Correo Electrónico</h3>
+          <input type="email" name="correo" placeholder="correo@ejemplo.com">
+        </div>
+
+        <div class="field-group">
+          <h3>Contraseña</h3>
+          <input type="password" name="contrasena" placeholder="Tu contraseña">
+        </div>
+
+        <div class="field-group">
+          <h3>Número</h3>
+          <input type="number" name="numero" min="0" max="100">
+        </div>
+
+        <div class="field-group">
+          <h3>Teléfono</h3>
+          <input type="tel" name="telefono" placeholder="+51 999 999 999">
+        </div>
+
+        <div class="field-group">
+          <h3>Sitio Web</h3>
+          <input type="url" name="url" placeholder="https://ejemplo.com">
+        </div>
+
+        <div class="field-group">
+          <h3>Búsqueda</h3>
+          <input type="search" name="busqueda" placeholder="Buscar...">
+        </div>
+
+        <div class="field-group">
+          <h3>Fecha y Hora</h3>
+          <input type="date" name="fecha"> <br><br>
+          <input type="time" name="hora">
+        </div>
+
+        <div class="field-group">
+          <h3>Mes, Semana y Datetime</h3>
+          <input type="month" name="mes"> <br><br>
+          <input type="week" name="semana"> <br><br>
+          <input type="datetime-local" name="fechahora">
+        </div>
+
+        <div class="field-group">
+          <h3>Color Favorito</h3>
+          <input type="color" name="color">
+        </div>
+
+        <div class="field-group">
+          <h3>Rango (0–100)</h3>
+          <input type="range" name="rango" min="0" max="100">
+        </div>
+
+        <div class="field-group">
+          <h3>Acepto los Términos</h3>
+          <input type="checkbox" name="acepto"> Sí, acepto
+        </div>
+
+        <div class="field-group">
+          <h3>Califica tu experiencia</h3>
+          <label><input type="radio" name="calificacion" value="1"> 1</label><br>
+          <label><input type="radio" name="calificacion" value="2"> 2</label><br>
+          <label><input type="radio" name="calificacion" value="3"> 3</label><br>
+          <label><input type="radio" name="calificacion" value="4"> 4</label><br>
+          <label><input type="radio" name="calificacion" value="5"> 5</label>
+        </div>
+
+        <div class="field-group">
+          <h3>Subir Archivo</h3>
+          <input type="file" name="archivo">
+        </div>
+
+        <div class="field-group">
+          <h3>Elegir opción</h3>
+          <select name="especialidad">
+            <option value="">-- Selecciona una opción --</option>
+            <option value="ia">Inteligencia Artificial</option>
+            <option value="ds">Ciencia de Datos</option>
+            <option value="seguridad">Seguridad Informática</option>
+            <option value="redes">Redes y Comunicaciones</option>
+            <option value="software">Desarrollo de Software</option>
+            <option value="sistemas">Sistemas de Información</option>
+          </select>
+        </div>
+
+        <div class="field-group full-width">
+          <h3>Comentarios Adicionales</h3>
+          <textarea name="comentarios" rows="4" placeholder="Escribe tus observaciones aquí..."></textarea>
+        </div>
+
+                <div class="field-group">
+          <h3>Modo Oscuro</h3>
+          <button id="toggle-dark-mode" type="button">Activar modo oscuro</button>
+        </div>
+      </div>
+
+      <button type="submit">Enviar Formulario</button>
+    </form>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,700;1,700&display=swap');
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f0f0f0;
+  padding: 40px 20px;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  transition: background 0.3s, color 0.3s;
+}
+
+body.dark-mode {
+  background-color: #121212;
+  color: #eee;
+}
+
+.container {
+  max-width: 1000px;
+  width: 100%;
+}
+
+.form-header {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+  text-align: center;
+  transition: background 0.3s;
+}
+
+.form-header h1 {
+  margin: 0 0 10px;
+  font-size: 28px;
+  color: #000;
+  font-family: 'Comic Neue', cursive;
+}
+
+.form-header p {
+  margin: 0;
+  font-size: 16px;
+  color: #555;
+}
+
+body.dark-mode .form-header {
+  background-color: #1e1e1e;
+}
+
+body.dark-mode .form-header h1,
+body.dark-mode .form-header p {
+  color: #eee;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.field-group {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: background 0.3s;
+}
+
+.field-group:hover {
+  transform: scale(1.01);
+}
+
+.field-group h3 {
+  margin-top: 0;
+  font-size: 17px;
+  margin-bottom: 10px;
+  text-align: center;
+  color: #000;
+  font-family: 'Comic Neue', cursive;
+}
+
+.field-group input,
+.field-group select,
+.field-group textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 5px;
+  box-sizing: border-box;
+  transition: background 0.3s, color 0.3s;
+}
+
+input[type="color"],
+input[type="range"],
+input[type="checkbox"],
+input[type="radio"],
+input[type="file"] {
+  width: auto;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.full-width {
+  grid-column: span 2;
+}
+
+button[type="submit"] {
+  background-color: #000;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 24px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #222;
+}
+
+body.dark-mode .field-group {
+  background-color: #1f1f1f;
+  color: #eee;
+  border: 1px solid #333;
+}
+
+body.dark-mode .field-group h3 {
+  color: #fff;
+}
+
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea {
+  background-color: #2a2a2a;
+  color: #eee;
+  border: 1px solid #555;
+}
+
+body.dark-mode button[type="submit"] {
+  background-color: #fff;
+  color: #000;
+}
+
+body.dark-mode #toggle-dark-mode {
+  background-color: #fff;
+  color: #000;
+}
+
+#toggle-dark-mode {
+  background-color: #000;
+  color: #fff;
+  font-size: 14px;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+}
+
+#toggle-dark-mode:hover {
+  background-color: #222;
+}
