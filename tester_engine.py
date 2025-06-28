@@ -13,7 +13,10 @@ from auto_form.input_password_tester import run_input_password_tests # Pruebas p
 from auto_form.input_number_tester import run_input_number_tests # Pruebas para inputs tipo number
 from auto_form.input_tel_tester import run_input_tel_tests # Pruebas de campos tipo tel
 from auto_form.input_url_tester import run_input_url_tests # Pruebas de campos tipo url
-
+from auto_form.input_search_tester import run_input_search_tests # Pruebas de campos tipo search
+from auto_form.input_datetime_tester import run_input_datetime_tests # Pruebas para campos de tipo datetime
+from auto_form.input_color_tester import run_input_color_tests # Pruebas para campos de tipo color
+from auto_form.input_range_tester import run_input_range_tests # Pruebas para campos de tipo color
 
 # ======================
 # Función principal
@@ -39,6 +42,10 @@ def run_tests(url):  # Recibe la URL del HTML a probar
         results.extend(run_input_number_tests(driver)) # Inputs tipo number
         results.extend(run_input_tel_tests(driver)) # Inputs tipo tel
         results.extend(run_input_url_tests(driver))
+        results.extend(run_input_search_tests(driver))
+        results.extend(run_input_datetime_tests(driver))
+        results.extend(run_input_color_tests(driver))
+        results.extend(run_input_range_tests(driver))
 
     except Exception as e:
         results.append(f"[✘] Error general: {e}")  # Capturamos cualquier fallo grave
