@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, messagebox, filedialog 
+from tkinter import ttk, messagebox, filedialog, PhotoImage
 from tester_engine import run_tests 
 from pathlib import Path 
 import threading 
@@ -53,7 +53,9 @@ def ejecutar(): # Ejecuta validaciones al presionar el botón
 # Crear ventana principal
 # ========================
 root = tk.Tk() # Creamos ventana raíz
-root.title("HTML5 Form Tester - Selenium GUI") # Título de ventana
+root.title("Selenium Tester Engine") # Título de la app
+icono = PhotoImage(file="assets/icon.png")
+root.iconphoto(False, icono) # Icono de la app
 root.geometry("800x600") # Tamaño inicial
 root.configure(bg=FONDO) # Fondo en modo oscuro
 
