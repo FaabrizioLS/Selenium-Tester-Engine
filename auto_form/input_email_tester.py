@@ -1,16 +1,20 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-# ====================================
-# Función principal para probar emails
-# ====================================
-def run_input_email_tests(driver): # Recibe un driver Selenium ya inicializado
-    results = [] # Lista para almacenar los resultados
-    inputs = driver.find_elements(By.CSS_SELECTOR, 'input[type="email"]') # Seleccionamos todos los campos tipo email
+def run_input_email_tests(driver, timeout=10):
+    results = []
+    wait = WebDriverWait(driver, timeout)
 
-    # ========================
-    # Identificación del campo
-    # ========================
-    def describir_input(el, index): # Generamos una descripción legible del input
+    # Soportamos tanto email como inputs de texto con nombres sospechosos
+    selectors = [
+        'input[type="email"]',
+        'input[type="text"][placeholder*="email" i]',
+        'input[type="text"][name*="email" i]',
+        'input[type="text"][id*="email" i]'
+    ]
+
+    def describir_input(el, index):
         ph = el.get_attribute("placeholder")
         name = el.get_attribute("name")
         id_attr = el.get_attribute("id")
@@ -19,29 +23,20 @@ def run_input_email_tests(driver): # Recibe un driver Selenium ya inicializado
         elif id_attr: return f'Input con id="{id_attr}"'
         else: return f'Input[{index}] sin identificador'
 
-    # ======================
-    # Pruebas por cada campo
-    # ======================
     def probar_input(input_email, identificador):
-
-        def test(nombre, funcion): # Ejecutamos una prueba y almacenamos el resultado
+        def test(nombre, funcion):
             try:
                 mensaje, estado = funcion()
                 results.append(f"[{estado}] {identificador} - {nombre}: {mensaje}")
             except Exception as e:
-                results.append(f"[❌] {identificador} - {nombre}: Error durante la prueba: {str(e)}")
-
-        # ========================
-        # Pruebas específicas para email
-        # ========================
+                results.append(f"[❌] {identificador} - {nombre}: Error: {str(e)}")
 
         def correo_valido():
             input_email.clear()
             input_email.send_keys("usuario@correo.com")
             valor = input_email.get_attribute("value")
             return ("Correo aceptado correctamente." if valor == "usuario@correo.com"
-                    else f"Correo no aceptado. Valor: '{valor}'",
-                    "✔" if valor == "usuario@correo.com" else "❌")
+                    else f"No aceptado. Valor: '{valor}'", "✔" if valor == "usuario@correo.com" else "❌")
 
         def sin_arroba():
             input_email.clear()
@@ -53,18 +48,18 @@ def run_input_email_tests(driver): # Recibe un driver Selenium ya inicializado
             input_email.clear()
             input_email.send_keys("usuario@")
             valor = input_email.get_attribute("value")
-            return ("Dominio incompleto detectado.", "❌") if valor.endswith("@") else ("Dominio fue modificado.", "❗")
+            return ("Dominio incompleto detectado.", "❌") if valor.endswith("@") else ("Dominio incompleto modificado.", "⚠")
 
         def doble_arroba():
             input_email.clear()
             input_email.send_keys("user@@dominio.com")
             valor = input_email.get_attribute("value")
-            return ("Email con doble @ detectado.", "❌") if valor.count("@") > 1 else ("Aceptó doble @", "❗")
+            return ("Doble @ detectado.", "❌") if valor.count("@") > 1 else ("Aceptó doble @", "⚠")
 
         def vacio():
             input_email.clear()
             valor = input_email.get_attribute("value")
-            return ("Campo vacío permitido.", "⚠") if valor == "" else (f"No se vació correctamente: '{valor}'", "❌")
+            return ("Campo vacío permitido." if valor == "" else f"No se vació correctamente: '{valor}'", "⚠")
 
         def espacios():
             input_email.clear()
@@ -77,7 +72,7 @@ def run_input_email_tests(driver): # Recibe un driver Selenium ya inicializado
             payload = '<script>alert(1)</script>'
             input_email.send_keys(payload)
             valor = input_email.get_attribute("value")
-            return ("XSS sin sanitizar." if payload in valor else "XSS bloqueado o modificado.",
+            return ("XSS sin sanitizar." if payload in valor else "XSS bloqueado o sanitizado.",
                     "❗" if payload in valor else "✔")
 
         def sql():
@@ -93,7 +88,7 @@ def run_input_email_tests(driver): # Recibe un driver Selenium ya inicializado
             texto = "a" * 200 + "@gmail.com"
             input_email.send_keys(texto)
             valor = input_email.get_attribute("value")
-            if len(valor) >= len(texto): return "Aceptó correo muy largo.", "✔"
+            if len(valor) >= len(texto): return "Correo largo aceptado.", "✔"
             elif 0 < len(valor) < len(texto): return f"Texto recortado. Largo final: {len(valor)}", "⚠"
             else: return "Texto largo rechazado.", "❌"
 
@@ -107,11 +102,20 @@ def run_input_email_tests(driver): # Recibe un driver Selenium ya inicializado
         test("Inyección SQL", sql)
         test("Texto largo", largo)
 
-    # ======================
-    # Ejecutamos por input
-    # ======================
-    for idx, input_el in enumerate(inputs):
-        identificador = describir_input(input_el, idx + 1)
-        probar_input(input_el, identificador)
+    # Buscar y testear cada input encontrado por selector
+    index = 1
+    encontrados = set()
+    for selector in selectors:
+        try:
+            elementos = wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, selector)))
+            for el in elementos:
+                if el in encontrados:
+                    continue
+                encontrados.add(el)
+                identificador = describir_input(el, index)
+                probar_input(el, identificador)
+                index += 1
+        except:
+            results.append(f"[⚠] No se encontraron elementos con selector: {selector}")
 
     return results

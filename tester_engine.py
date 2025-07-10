@@ -1,40 +1,72 @@
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from datetime import datetime
+from browser_factory import crear_driver
+import time
 
-from selenium import webdriver                          
-from selenium.webdriver.firefox.options import Options  
-from selenium.webdriver.firefox.service import Service  
+# =============================
+# Módulos de pruebas automáticas
+# =============================
 from auto_form.input_text_tester import run_input_text_tests
 from auto_form.input_email_tester import run_input_email_tests
-from datetime import datetime                           
-import time                                             
+from auto_form.input_password_tester import run_input_password_tests
+from auto_form.input_number_tester import run_input_number_tests
+from auto_form.input_tel_tester import run_input_tel_tests
+from auto_form.input_url_tester import run_input_url_tests
+from auto_form.input_search_tester import run_input_search_tests
+from auto_form.input_range_tester import run_input_range_tests
+from auto_form.input_checkbox_tester import run_input_checkbox_tests
+from auto_form.input_radio_tester import run_input_radio_tests
+from auto_form.input_file_tester import run_input_file_tests
+from auto_form.input_select_tester import run_input_select_tests
+from auto_form.input_textarea_tester import run_input_textarea_tests
+from auto_form.input_color_tester import run_input_color_tests
+from auto_form.input_datetime_tester import run_input_datetime_tests
+from auto_form.input_button_tester import run_button_tests
 
 # ======================
 # Función principal
 # ======================
-def run_tests(url):  # Recibe la URL del HTML a probar
-    results = []  # Lista para acumular los resultados
-    options = Options()
-    options.add_argument("--headless")  # Para que no se abra la ventana del navegador
-    service = Service(executable_path="C:/WebDriver/geckodriver.exe")  # Ruta a geckodriver
-    driver = webdriver.Firefox(service=service, options=options)  # Inicia el navegador
+def run_tests(url, navegador="firefox"):
+    results = []
+    driver = crear_driver(navegador)
 
     try:
-        driver.get(url)  # Abre la página
-        time.sleep(1)  # Esperamos que el DOM cargue
-        results.append("[✔] Página cargada correctamente")  # Confirmación visual
+        driver.get(url)
+        time.sleep(3)
 
-        results.extend(run_input_text_tests(driver))   # Ejecutamos pruebas de texto
-        results.extend(run_input_email_tests(driver))  # Ejecutamos pruebas de email
+        results.append("[✔] Página cargada correctamente")
+
+        # Seguir con las pruebas
+        results.extend(run_input_text_tests(driver))
+        results.extend(run_input_email_tests(driver))
+        results.extend(run_input_password_tests(driver))
+        results.extend(run_input_number_tests(driver))
+        results.extend(run_input_tel_tests(driver))
+        results.extend(run_input_url_tests(driver))
+        results.extend(run_input_search_tests(driver))
+        results.extend(run_input_range_tests(driver))
+        results.extend(run_input_checkbox_tests(driver))
+        results.extend(run_input_radio_tests(driver))
+        results.extend(run_input_file_tests(driver))
+        results.extend(run_input_select_tests(driver))
+        results.extend(run_input_textarea_tests(driver))
+        results.extend(run_input_color_tests(driver))
+        results.extend(run_input_datetime_tests(driver))
+        results.extend(run_button_tests(driver))
 
     except Exception as e:
-        results.append(f"[✘] Error general: {e}")  # Capturamos cualquier error grave
+        results.append(f"[✘] Error general: {e}")
 
     finally:
-        driver.quit()  # Cerramos el navegador
-        return generate_report(results)  # Generamos y retornamos el reporte
+        driver.quit()
+        return generate_report(results)
 
-# ======================
-# Generador de reporte
-# ======================
+
+# ==========================
+# Generador de reporte final
+# ==========================
 def generate_report(results):
     categories = {
         "✅ FUNCIONAL": [],
@@ -54,7 +86,7 @@ def generate_report(results):
             categories["⚠️ POSIBLE VULNERABILIDAD"].append(res[4:])
 
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    report = [f"🧪 INFORME AUTOMÁTICO DE PRUEBAS – {now}", "-" * 60]
+    report = [f"INFORME AUTOMÁTICO DE PRUEBAS – {now}", "-" * 60]
 
     for titulo, items in categories.items():
         report.append(f"\n{titulo}:")
@@ -69,9 +101,10 @@ def generate_report(results):
     report.append(f"  Vulnerabilidades: {len(categories['⚠️ POSIBLE VULNERABILIDAD'])}")
     return "\n".join(report)
 
-# ======================
-# Modo prueba directa
-# ======================
+
+# =======================
+# Prueba directa opcional
+# =======================
 if __name__ == "__main__":
-    url_prueba = "file:///C:/Users/Windows/Desktop/formulario.html"  # Cambia por tu ruta local
-    print(run_tests(url_prueba))
+    url_prueba = "file:///C:/Users/Windows/Desktop/formulario.html"
+    print(run_tests(url_prueba, navegador="firefox"))
